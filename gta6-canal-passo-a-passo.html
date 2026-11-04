@@ -134,9 +134,10 @@
   .copybox pre{white-space:pre-wrap;word-break:break-word;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.7;color:#d8cfe4}
 
   /* ---------- table ---------- */
-  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+  table{width:100%;table-layout:fixed;border-collapse:collapse;margin:18px 0;font-size:13.5px}
   th{text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);font-weight:400}
-  td{padding:11px 12px;border-bottom:1px solid rgba(247,238,230,.07);color:var(--muted);vertical-align:top;font-weight:300}
+  td{padding:11px 12px;border-bottom:1px solid rgba(247,238,230,.07);color:var(--muted);vertical-align:top;font-weight:300;word-break:break-word;overflow-wrap:anywhere}
+  td code{white-space:normal;word-break:break-word}
   td b{color:var(--cream);font-weight:600}
   tr:hover td{background:rgba(255,255,255,.02)}
 
@@ -407,7 +408,40 @@ Novos vídeos 3 vezes por semana. Inscreva-se e ative o sino para chegar no dia 
       <div class="checklist">
         <label class="check"><input type="checkbox" data-k="c1"><span><b>País e moeda:</b> <span class="path">Studio → Configurações → Geral</span>. Brasil e BRL.</span></label>
         <label class="check"><input type="checkbox" data-k="c2"><span><b>Palavras-chave do canal</b> preenchidas com os termos do nicho.</span></label>
-        <label class="check"><input type="checkbox" data-k="c3"><span><b>Padrões de upload:</b> título, descrição, tags, categoria <b>Jogos</b> e visibilidade <b>Não listado</b> até revisar.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3"><span><b>Padrões de upload configurados</b> (campo a campo abaixo).</span></label>
+
+      <div class="note" style="margin-top:10px"><b>Caminho:</b> <span class="path">Studio → Configurações (ícone de engrenagem) → Upload padrão</span>. Preencha cada campo exatamente como abaixo e clique em <b>Salvar</b>. Isso faz todo vídeo novo nascer com esses valores, sem você ter que digitar de novo.</div>
+
+      <table style="margin-top:14px">
+        <thead><tr><th>Campo</th><th>O que colocar</th><th>Por quê</th></tr></thead>
+        <tbody>
+          <tr><td><b>Título padrão</b></td><td>Deixe em branco</td><td>O título muda a cada vídeo. Se preencher aqui, todo vídeo sai com o mesmo nome.</td></tr>
+          <tr><td><b>Descrição padrão</b></td><td>Cole o modelo da caixa “Descrição padrão de upload” (passo abaixo)</td><td>Já entra com capítulos, fonte e hashtags. Você só ajusta os horários por vídeo.</td></tr>
+          <tr><td><b>Tags padrão</b></td><td><code>gta 6, gta vi, rockstar, gta 6 notícias, gta 6 novidades, leonida, gta 6 lista</code></td><td>Termos do nicho. Máximo 500 caracteres somados.</td></tr>
+          <tr><td><b>Categoria</b></td><td><b>Jogos</b> (Gaming)</td><td>Classifica o canal no nicho certo para recomendação.</td></tr>
+          <tr><td><b>Idioma do vídeo</b></td><td>Português (Brasil)</td><td>Ajuda na busca e nas legendas automáticas.</td></tr>
+          <tr><td><b>Licença</b></td><td>Padrão do YouTube</td><td>Permite reutilização com atribuição. Não use “Creative Commons” em conteúdo próprio.</td></tr>
+          <tr><td><b>Visibilidade padrão</b></td><td><b>Não listado</b></td><td>Evita publicar por acidente. Você muda para <b>Público</b> só depois de revisar tudo.</td></tr>
+          <tr><td><b>Comentários</b></td><td>Ativados, com “reter inadequados”</td><td>Configurado no passo c4.</td></tr>
+          <tr><td><b>Monetização</b></td><td>Deixar padrão (ativar se elegível)</td><td>Só funciona depois da aprovação no Partner Program.</td></tr>
+          <tr><td><b>Legendas</b></td><td>Automático (revisar depois)</td><td>O YouTube gera sozinho; você corrige erros de nomes e termos.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="copybox" style="margin-top:16px">
+        <div class="bar"><span>Tags padrão · copiar e colar</span><button data-copy="tagsPadrao">Copiar</button></div>
+<pre id="tagsPadrao">gta 6, gta vi, rockstar, gta 6 notícias, gta 6 novidades, leonida, gta 6 lista, gta 6 mapa, gta 6 trailer, gta 6 segredos</pre>
+      </div>
+
+      <div class="checklist" style="margin-top:14px">
+        <label class="check"><input type="checkbox" data-k="c3a"><span><b>Título padrão</b> deixado em branco.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3b"><span><b>Descrição padrão</b> colada e salva.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3c"><span><b>Tags padrão</b> coladas.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3d"><span><b>Categoria</b> definida como Jogos.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3e"><span><b>Idioma</b> definido como Português (Brasil).</span></label>
+        <label class="check"><input type="checkbox" data-k="c3f"><span><b>Visibilidade padrão</b> em Não listado.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3g"><span>Clicado em <b>Salvar</b> e confirmado.</span></label>
+      </div>
         <label class="check"><input type="checkbox" data-k="c4"><span><b>Comentários:</b> “reter comentários potencialmente inadequados para revisão”.</span></label>
         <label class="check"><input type="checkbox" data-k="c5"><span><b>Playlists criadas:</b> Notícias, Listas, Teorias — mesmo que vazias.</span></label>
       </div>
@@ -429,6 +463,33 @@ Este vídeo é uma análise independente e não tem vínculo com a Rockstar Game
       </div>
 
       <div class="note">Os capítulos só aparecem se o vídeo tiver <b>pelo menos 3 capítulos</b> e o primeiro começar em <b>00:00</b>. O YouTube usa os capítulos como sinal de qualidade e retenção.</div>
+
+      <h3 style="margin-top:36px">Mensagem de boas-vindas da comunidade</h3>
+      <p style="font-size:14.5px">Os novos espectadores geralmente não conhecem seu canal muito bem quando fazem comentários ou participam do chat ao vivo. A mensagem de boas-vindas precisa definir as expectativas da sua comunidade e incentivar os usuários a seguir suas diretrizes.</p>
+
+      <div class="note" style="margin-top:14px"><b>Onde configurar:</b> <span class="path">Studio → Configurações (engrenagem) → Comunidade → Mensagem de boas-vindas</span>. Disponível quando o canal tiver acesso à aba Comunidade (a partir de 500 inscritos). <b>Até lá</b>, fixe um comentário com a mesma mensagem no primeiro vídeo.</div>
+
+      <div class="copybox" style="margin-top:16px">
+        <div class="bar"><span>Mensagem de boas-vindas · pronta para colar</span><button data-copy="welcomeMsg">Copiar</button></div>
+<pre id="welcomeMsg">Bem-vindo(a) ao canal! 👋
+
+Aqui você encontra notícias, listas e teorias sobre GTA 6, com análise e contexto — sem repost e sem enrolação.
+
+Para manter a comunidade saudável, algumas regras:
+• Respeite outros espectadores e criadores. Críticas são bem-vindas; ofensas não.
+• Sem spam, links ou autopromoção nos comentários.
+• Sem spoilers de outros jogos sem aviso prévio.
+• Mantenha o foco no tema do vídeo.
+
+Comentários fora das regras podem ser removidos e usuários banidos.
+
+Se gostou do conteúdo, inscreva-se e ative o sino para não perder os próximos. Obrigado por fazer parte! 🎮</pre>
+      </div>
+
+      <div class="checklist" style="margin-top:14px">
+        <label class="check"><input type="checkbox" data-k="cw1"><span>Mensagem de boas-vindas <b>copiada e colada</b> no Studio (ou fixada como comentário no primeiro vídeo).</span></label>
+        <label class="check"><input type="checkbox" data-k="cw2"><span>Regras de comunidade <b>revisadas</b> e ajustadas ao seu estilo.</span></label>
+      </div>
     </section>
 
     <!-- 06 -->
