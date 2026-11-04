@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>GTA VI — O canal antes do dia 19</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06040b;
+    --ink-2:#0d0817;
+    --cream:#f7eee6;
+    --muted:#b3a7c4;
+    --pink:#ff2e88;
+    --orange:#ff8a3d;
+    --violet:#7b5cff;
+    --line:rgba(247,238,230,.12);
+    --card:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012));
+    --display:'Anton','Haettenschweiler','Impact',sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--ink);
+    color:var(--cream);
+    font-family:var(--body);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 50% at 82% -5%,rgba(255,46,136,.18),transparent 65%),
+      radial-gradient(ellipse 55% 45% at 5% 105%,rgba(255,138,61,.14),transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 50%,rgba(123,92,255,.07),transparent 70%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.35;
+    background-image:repeating-linear-gradient(90deg,rgba(247,238,230,.028) 0 1px,transparent 1px 110px);
+    mask-image:radial-gradient(ellipse at 50% 50%,#000 30%,transparent 85%);
+  }
+  .grain{
+    position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.055;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- deck 16:9 ---------- */
+  .deck{
+    position:fixed;inset:0;margin:auto;z-index:2;
+    width:min(100vw,177.78vh);
+    height:min(100vh,56.25vw);
+    overflow:hidden;
+    --s:min(1vw,1.7778vh);
+  }
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:calc(var(--s)*3.2) calc(var(--s)*3.8);
+    opacity:0;visibility:hidden;
+    transition:opacity .45s ease,visibility .45s;
+    overflow:hidden;
+    font-size:calc(var(--s)*1.05);
+  }
+  .slide.active{opacity:1;visibility:visible}
+  .slide.active .anim{animation:rise .8s cubic-bezier(.16,.8,.24,1) both;animation-delay:calc(var(--d,0)*1ms)}
+  @keyframes rise{from{opacity:0;transform:translateY(calc(var(--s)*1.1))}to{opacity:1;transform:none}}
+
+  /* ---------- type ---------- */
+  h1,h2,h3{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.9;letter-spacing:.005em}
+  h1{font-size:calc(var(--s)*6.6)}
+  h2{font-size:calc(var(--s)*3.5)}
+  .lead{font-size:calc(var(--s)*1.12);line-height:1.5;color:var(--muted);max-width:56ch;font-weight:300}
+  .kicker{
+    display:flex;align-items:center;gap:calc(var(--s)*.8);
+    font-family:var(--mono);font-size:calc(var(--s)*.68);letter-spacing:.3em;text-transform:uppercase;
+    color:var(--pink);margin-bottom:calc(var(--s)*1.4);
+  }
+  .kicker::before{content:"";width:calc(var(--s)*2.4);height:1px;background:var(--pink);opacity:.7}
+  .accent{color:var(--pink)}
+  .outline{color:transparent;-webkit-text-stroke:1.5px rgba(247,238,230,.55)}
+
+  /* ---------- header of content slides ---------- */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:calc(var(--s)*3);margin-bottom:calc(var(--s)*2.4)}
+  .step-no{
+    font-family:var(--display);font-size:calc(var(--s)*1.5);line-height:1;color:var(--ink);
+    background:linear-gradient(135deg,var(--pink),var(--orange));
+    width:calc(var(--s)*3.2);height:calc(var(--s)*3.2);border-radius:50%;
+    display:grid;place-items:center;flex:none;
+    box-shadow:0 0 calc(var(--s)*2.4) rgba(255,46,136,.35);
+  }
+  .head-text{flex:1}
+  .head .lead{margin-top:calc(var(--s)*.8);max-width:62ch}
+
+  /* ---------- cards / grids ---------- */
+  .grid{display:grid;gap:calc(var(--s)*1);}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:calc(var(--s)*.65);
+    padding:calc(var(--s)*1.4);
+    position:relative;overflow:hidden;
+  }
+  .card:hover{border-color:rgba(255,46,136,.35)}
+  .card .tag{font-family:var(--mono);font-size:calc(var(--s)*.6);letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+  .card h3{font-size:calc(var(--s)*1.55);margin:calc(var(--s)*.55) 0 calc(var(--s)*.7)}
+  .card p,.card li{font-size:calc(var(--s)*.86);line-height:1.45;color:var(--muted);font-weight:300}
+  .card ul{list-style:none;display:grid;gap:calc(var(--s)*.45)}
+  .card li{position:relative;padding-left:calc(var(--s)*1.05)}
+  .card li::before{content:"";position:absolute;left:0;top:.55em;width:calc(var(--s)*.45);height:1px;background:var(--pink)}
+
+  .rule{height:1px;background:var(--line);margin:calc(var(--s)*1.8) 0}
+  .note{
+    display:flex;gap:calc(var(--s)*.9);align-items:flex-start;
+    font-size:calc(var(--s)*.9);line-height:1.5;color:var(--cream);
+    border-left:2px solid var(--pink);padding-left:calc(var(--s)*1);
+    max-width:70ch;font-weight:300;
+  }
+  .note b{font-weight:600}
+
+  /* ---------- cover ---------- */
+  .cover{display:grid;grid-template-columns:1.4fr .6fr;align-items:center;gap:calc(var(--s)*2)}
+  .cover h1{margin:calc(var(--s)*1) 0 calc(var(--s)*1.4)}
+  .cover h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--pink)}
+  .meta-row{display:flex;gap:calc(var(--s)*2.4);margin-top:calc(var(--s)*2.4);flex-wrap:wrap}
+  .meta-row div{display:grid;gap:calc(var(--s)*.3)}
+  .meta-row small{font-family:var(--mono);font-size:calc(var(--s)*.55);letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
+  .meta-row strong{font-family:var(--display);font-size:calc(var(--s)*1.15);letter-spacing:.04em;font-weight:400}
+  .sun{position:relative;aspect-ratio:1;width:100%;display:grid;place-items:center}
+  .sun::before{
+    content:"";position:absolute;inset:8%;
+    border-radius:50%;
+    background:radial-gradient(circle at 50% 48%,#ff9b4a 0%,#ff2e88 45%,#7b5cff 78%,rgba(6,4,11,0) 79%);
+    filter:blur(calc(var(--s)*.5));
+    opacity:.9;
+    box-shadow:0 0 calc(var(--s)*7) rgba(255,46,136,.35);
+  }
+  .sun .vi{
+    position:relative;z-index:2;font-family:var(--display);
+    font-size:calc(var(--s)*11);line-height:.75;color:var(--ink);
+    -webkit-text-stroke:2px rgba(6,4,11,.55);
+    text-shadow:0 calc(var(--s)*.25) 0 rgba(6,4,11,.35);
+  }
+  .sun .cap{position:absolute;bottom:4%;z-index:3;font-family:var(--mono);font-size:calc(var(--s)*.55);letter-spacing:.35em;color:var(--ink);opacity:.75}
+
+  /* ---------- stat slide ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--s)*2);align-items:stretch}
+  .stat-big{font-family:var(--display);font-size:calc(var(--s)*4.4);line-height:.85;background:linear-gradient(120deg,var(--pink),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .strike{position:relative;display:inline-block;color:var(--muted);opacity:.7}
+  .strike::after{content:"";position:absolute;left:-2%;right:-2%;top:52%;height:2px;background:var(--pink);transform:rotate(-2deg)}
+  .badge{display:inline-flex;align-items:center;gap:calc(var(--s)*.5);font-family:var(--mono);font-size:calc(var(--s)*.62);letter-spacing:.18em;text-transform:uppercase;color:var(--cream);border:1px solid var(--line);border-radius:99px;padding:calc(var(--s)*.4) calc(var(--s)*.9)}
+
+  /* ---------- chart ---------- */
+  .chart-row{display:grid;grid-template-columns:1.6fr 1fr;gap:calc(var(--s)*1.8);align-items:center}
+  .chart-wrap{position:relative}
+  .chart-wrap svg{width:100%;height:auto;overflow:visible}
+  .chart-legend{display:flex;justify-content:space-between;margin-top:calc(var(--s)*.6);font-family:var(--mono);font-size:calc(var(--s)*.58);letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .chart-line{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 1.8s .2s cubic-bezier(.3,.8,.3,1) forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* ---------- steps overview ---------- */
+  .six{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--s)*.9)}
+  .six .card{display:flex;flex-direction:column;gap:calc(var(--s)*.5);min-height:calc(var(--s)*8.6)}
+  .six .num{font-family:var(--display);font-size:calc(var(--s)*2.2);color:transparent;-webkit-text-stroke:1px rgba(255,46,136,.8);line-height:1}
+  .six h3{font-size:calc(var(--s)*1.35);margin:0}
+  .six p{font-size:calc(var(--s)*.8)}
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--s)*1);margin-top:calc(var(--s)*2)}
+  .timeline::before{content:"";position:absolute;left:0;right:0;top:calc(var(--s)*.28);height:1px;background:linear-gradient(90deg,var(--pink),var(--orange),rgba(247,238,230,.2))}
+  .tl-item{padding-top:calc(var(--s)*1.4);position:relative}
+  .tl-item::before{content:"";position:absolute;top:0;left:0;width:calc(var(--s)*.6);height:calc(var(--s)*.6);border-radius:50%;background:var(--pink);box-shadow:0 0 0 calc(var(--s)*.22) rgba(255,46,136,.15)}
+  .tl-item .when{font-family:var(--mono);font-size:calc(var(--s)*.62);letter-spacing:.2em;color:var(--orange);text-transform:uppercase}
+  .tl-item h3{font-size:calc(var(--s)*1.35);margin:calc(var(--s)*.5) 0 calc(var(--s)*.55)}
+  .tl-item p{font-size:calc(var(--s)*.82);line-height:1.45;color:var(--muted);font-weight:300}
+
+  /* ---------- production ---------- */
+  .prod{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--s)*.9);margin-top:calc(var(--s)*1)}
+  .prod .card{padding:calc(var(--s)*1.3)}
+  .prod .n{font-family:var(--mono);font-size:calc(var(--s)*.6);letter-spacing:.2em;color:var(--pink)}
+  .prod h3{font-size:calc(var(--s)*1.25);margin:calc(var(--s)*.6) 0}
+  .prod p{font-size:calc(var(--s)*.8);line-height:1.45}
+  .metrics{display:flex;gap:calc(var(--s)*2.6);margin-top:calc(var(--s)*1.8);flex-wrap:wrap}
+  .metrics div{display:flex;align-items:baseline;gap:calc(var(--s)*.55)}
+  .metrics strong{font-family:var(--display);font-size:calc(var(--s)*1.9);font-weight:400;color:var(--cream)}
+  .metrics span{font-family:var(--mono);font-size:calc(var(--s)*.62);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- thumbnail mock ---------- */
+  .thumb-demo{position:relative;aspect-ratio:16/9;border-radius:calc(var(--s)*.5);overflow:hidden;border:1px solid rgba(247,238,230,.2);box-shadow:0 calc(var(--s)*1.6) calc(var(--s)*3) rgba(0,0,0,.45)}
+  .thumb-demo .bg{position:absolute;inset:0;background:
+      radial-gradient(circle at 70% 30%,rgba(255,138,61,.85),transparent 55%),
+      radial-gradient(circle at 35% 80%,rgba(255,46,136,.75),transparent 60%),
+      linear-gradient(160deg,#2a0f2e,#0b0512 60%)}
+  .thumb-demo .grid-floor{position:absolute;inset:auto 0 0 0;height:45%;background:
+      repeating-linear-gradient(90deg,rgba(247,238,230,.14) 0 1px,transparent 1px 34px),
+      linear-gradient(0deg,rgba(255,46,136,.35),transparent)}
+  .thumb-demo .txt{position:absolute;left:6%;bottom:9%;font-family:var(--display);font-size:calc(var(--s)*3.1);line-height:.85;text-transform:uppercase;color:#fff;text-shadow:0 calc(var(--s)*.18) 0 #000,0 0 calc(var(--s)*1) rgba(0,0,0,.5)}
+  .thumb-demo .txt span{display:block;color:var(--pink);-webkit-text-stroke:0}
+  .thumb-demo .pill{position:absolute;top:6%;right:5%;font-family:var(--mono);font-size:calc(var(--s)*.5);letter-spacing:.2em;background:var(--cream);color:var(--ink);padding:calc(var(--s)*.25) calc(var(--s)*.6);border-radius:99px}
+  .rules{display:grid;gap:calc(var(--s)*.8);align-content:center}
+  .rule-item{display:flex;gap:calc(var(--s)*.9);align-items:flex-start}
+  .rule-item .dot{width:calc(var(--s)*.5);height:calc(var(--s)*.5);border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--orange));margin-top:calc(var(--s)*.38);flex:none}
+  .rule-item p{font-size:calc(var(--s)*.9);line-height:1.4;color:var(--cream);font-weight:300}
+  .rule-item p b{font-weight:600}
+
+  /* ---------- risk / money ---------- */
+  .risk .card{min-height:calc(var(--s)*7.2)}
+  .money{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--s)*1)}
+  .money .card{min-height:calc(var(--s)*8)}
+  .money .val{font-family:var(--display);font-size:calc(var(--s)*2.6);color:transparent;-webkit-text-stroke:1px rgba(255,46,136,.9);line-height:1}
+
+  /* ---------- final ---------- */
+  .final{text-align:center;align-items:center}
+  .final .big{font-family:var(--display);font-size:calc(var(--s)*13);line-height:.8;background:linear-gradient(160deg,var(--pink) 10%,var(--orange) 55%,var(--cream) 110%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .final .phrase{font-family:var(--display);font-size:calc(var(--s)*2.4);text-transform:uppercase;margin-top:calc(var(--s)*1.6);line-height:1}
+  .final .sub{font-family:var(--mono);font-size:calc(var(--s)*.66);letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-top:calc(var(--s)*1.4)}
+  .source{font-size:calc(var(--s)*.56);line-height:1.6;color:rgba(179,167,196,.55);font-weight:300;max-width:88ch;margin-top:calc(var(--s)*2.2)}
+
+  /* ---------- HUD ---------- */
+  .bar{position:fixed;top:0;left:0;height:2px;width:0;z-index:70;background:linear-gradient(90deg,var(--pink),var(--orange));box-shadow:0 0 12px rgba(255,46,136,.7);transition:width .35s ease}
+  .hud{position:fixed;inset:auto 0 0 0;z-index:70;display:flex;justify-content:space-between;align-items:flex-end;padding:calc(var(--s2,14px)*1.1) calc(var(--s2,14px)*1.4);pointer-events:none;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:rgba(179,167,196,.75);text-transform:uppercase}
+  .hud .counter b{color:var(--cream);font-weight:700}
+  .hud .hint{opacity:.55}
+  .hud button{pointer-events:auto;background:none;border:1px solid rgba(247,238,230,.18);color:var(--cream);font-family:var(--mono);font-size:10px;letter-spacing:.14em;padding:6px 10px;border-radius:99px;cursor:pointer;text-transform:uppercase}
+  .hud button:hover{border-color:var(--pink);color:var(--pink)}
+
+  /* ---------- notes ---------- */
+  .notes{display:none}
+  .notes-panel{position:fixed;left:0;right:0;bottom:0;z-index:80;background:rgba(9,5,15,.96);border-top:1px solid var(--line);padding:18px 24px 46px;display:none;font-size:14px;line-height:1.55;color:var(--muted);max-height:38vh;overflow:auto;backdrop-filter:blur(8px)}
+  body.notes-on .notes-panel{display:block}
+  .notes-panel b{color:var(--cream)}
+  .notes-panel .np-title{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+
+  /* ---------- responsive ---------- */
+  @media screen and (max-aspect-ratio:1/1){
+    .deck{width:100vw;height:100vh;--s:4vw}
+    .slide{padding:calc(var(--s)*1.6) calc(var(--s)*1.3);font-size:calc(var(--s)*.92);justify-content:flex-start}
+    .cover{grid-template-columns:1fr;gap:calc(var(--s)*.5)}
+    .sun{display:none}
+    .g2,.g3,.g4,.six,.money,.prod,.timeline,.split{grid-template-columns:1fr}
+    .chart-row{grid-template-columns:1fr}
+    .timeline::before{display:none}
+    .tl-item{border-top:1px solid var(--line);padding-top:calc(var(--s)*.8)}
+    .tl-item::before{top:calc(var(--s)*-.18)}
+    .head{flex-direction:column;align-items:flex-start;gap:calc(var(--s)*.8)}
+    .hud .hint{display:none}
+    h1{font-size:calc(var(--s)*2.2)}
+    h2{font-size:calc(var(--s)*1.9)}
+    .six .card,.risk .card,.money .card{min-height:0}
+    .slide{overflow-y:auto}
+    .final .big{font-size:calc(var(--s)*4)}
+    .source{position:static;margin-top:calc(var(--s)*1);font-size:calc(var(--s)*.42)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+
+  /* ---------- print ---------- */
+  @media print{
+    @page{size:1280px 720px;margin:0}
+    html,body{overflow:visible;background:#06040b;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    body::before,body::after,.grain,.hud,.bar{display:none!important}
+    .deck{position:static;width:auto;height:auto;--s:12.8px}
+    .slide{position:relative;opacity:1!important;visibility:visible!important;width:1280px;height:720px;background:#06040b;page-break-after:always;break-after:page;display:flex!important;print-color-adjust:exact}
+    .notes-panel{display:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="bar" id="bar"></div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 · CAPA -->
+  <section class="slide active" aria-hidden="false">
+    <div class="cover">
+      <div>
+        <div class="kicker anim" style="--d:0">Playbook de lançamento · GTA VI</div>
+        <h1 class="anim" style="--d:80">O canal<br>antes do <em>dia 19</em></h1>
+        <p class="lead anim" style="--d:180">Seis passos para sair do zero e chegar ao lançamento com a máquina rodando — sem aparecer, sem console e sem saber editar.</p>
+        <div class="meta-row anim" style="--d:280">
+          <div><small>Estreia</small><strong>19.11.2026</strong></div>
+          <div><small>Contagem</small><strong>16 dias</strong></div>
+          <div><small>Plano</small><strong>6 passos</strong></div>
+        </div>
+      </div>
+      <div class="sun anim" style="--d:200"><span class="vi">VI</span><span class="cap">LEONIDA</span></div>
+    </div>
+    <aside class="notes">Abertura. O vídeo foi gravado a 20 dias do lançamento (19/11). Hoje restam 16. A tese central: a promessa dos gurus é exagerada no número, mas certa na direção. O plano abaixo é o passo a passo descrito no vídeo, sem depender do treinamento pago citado no final.</aside>
+  </section>
+
+  <!-- 2 · VERDADE -->
+  <section class="slide" aria-hidden="true">
+    <div class="kicker anim" style="--d:0">Antes do passo 1 · honestidade</div>
+    <div class="head anim" style="--d:60">
+      <div class="head-text">
+        <h2>A promessa é exagerada.<br><span class="accent">A direção está certa.</span></h2>
+      </div>
+    </div>
+    <div class="split">
+      <div class="card anim" style="--d:140;display:flex;flex-direction:column;justify-content:center;gap:calc(var(--s)*1.2)">
+        <div class="tag">O que circula por aí</div>
+        <div style="font-family:var(--display);font-size:calc(var(--s)*3.1);line-height:.95" class="strike">US$ 1.000 – 15.000</div>
+        <p style="font-size:calc(var(--s)*.95)">por vídeo, prometido em canais gringos. É marketing esticado: a média do nicho de games não paga isso, e quem apresenta teto como piso geralmente está vendendo ferramenta milagrosa.</p>
+      </div>
+      <div class="card anim" style="--d:240;display:flex;flex-direction:column;justify-content:center;gap:calc(var(--s)*.7)">
+        <div class="tag">O que é real</div>
+        <div class="stat-big">700 mil</div>
+        <p style="font-size:calc(var(--s)*.95)">views em um mês num único vídeo de 26 minutos, listando detalhes das imagens oficiais do GTA VI. Canal dark, sem rosto, feito de material oficial com narração por cima.</p>
+        <p style="font-size:calc(var(--s)*.82);font-family:var(--mono);letter-spacing:.06em;color:var(--cream)">UM VÍDEO · CASA DOS MILHARES DE DÓLARES</p>
+      </div>
+    </div>
+    <div class="note anim" style="--d:360;margin-top:calc(var(--s)*1.8)">Não é milagre, é <b>método numa janela gigante</b>. O teto existe — mas ele é alcançado com execução, não com promessa.</div>
+    <aside class="notes">Ponto de honestidade do vídeo. Ele desmonta a promessa de US$ 1.000 a 15.000 por vídeo e logo em seguida mostra um case real de 700 mil views em 26 minutos, num canal dark sem rosto, usando só material oficial da Rockstar com narração.</aside>
+  </section>
+
+  <!-- 3 · EFEITO EVENTO -->
+  <section class="slide" aria-hidden="true">
+    <div class="kicker anim" style="--d:0">Por que agora</div>
+    <div class="head anim" style="--d:60">
+      <div class="head-text">
+        <h2>O efeito evento</h2>
+        <p class="lead">Quando o assunto domina a internet, o canal de notícias sobre ele imprime audiência num ritmo que não existe em época normal.</p>
+      </div>
+    </div>
+    <div class="chart-row">
+    <div class="chart-wrap anim" style="--d:160">
+      <svg viewBox="0 0 900 300" role="img" aria-label="Curva de audiência subindo até o lançamento e caindo depois">
+        <defs>
+          <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff2e88" stop-opacity=".45"/>
+            <stop offset="100%" stop-color="#ff2e88" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ff8a3d"/>
+            <stop offset="55%" stop-color="#ff2e88"/>
+            <stop offset="100%" stop-color="#7b5cff"/>
+          </linearGradient>
+        </defs>
+        <line x1="0" y1="299" x2="900" y2="299" stroke="rgba(247,238,230,.12)" stroke-width="1"/>
+        <line x1="620" y1="0" x2="620" y2="299" stroke="rgba(247,238,230,.22)" stroke-width="1" stroke-dasharray="4 6"/>
+        <path d="M0,262 C120,258 200,250 300,238 C380,228 440,214 500,186 C545,164 566,128 590,78 L600,54 L612,66 C640,96 668,132 706,158 C752,190 820,208 900,216 L900,299 L0,299 Z" fill="url(#area)"/>
+        <path class="chart-line" d="M0,262 C120,258 200,250 300,238 C380,228 440,214 500,186 C545,164 566,128 590,78 L600,54 L612,66 C640,96 668,132 706,158 C752,190 820,208 900,216" fill="none" stroke="url(#stroke)" stroke-width="3"/>
+        <circle cx="600" cy="54" r="6" fill="#ff2e88"/>
+        <circle cx="600" cy="54" r="12" fill="none" stroke="#ff2e88" stroke-opacity=".4"/>
+        <text x="614" y="40" fill="#f7eee6" font-family="Anton, sans-serif" font-size="22">19 NOV</text>
+        <text x="12" y="30" fill="#b3a7c4" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3">AQUECIMENTO</text>
+        <text x="700" y="250" fill="#b3a7c4" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3">PÓS-ESTREIA</text>
+      </svg>
+      <div class="chart-legend"><span>20 dias antes</span><span>lançamento</span><span>depois</span></div>
+    </div>
+    <div class="grid anim" style="--d:280;gap:calc(var(--s)*.9)">
+      <div class="card"><div class="tag">01</div><h3 style="font-size:calc(var(--s)*1.05);margin:calc(var(--s)*.35) 0 calc(var(--s)*.4)">Janela única</h3><p style="font-size:calc(var(--s)*.74)">O maior evento de entretenimento da década. Cada dia da contagem vale mais que uma semana de época normal.</p></div>
+      <div class="card"><div class="tag">02</div><h3 style="font-size:calc(var(--s)*1.05);margin:calc(var(--s)*.35) 0 calc(var(--s)*.4)">Manchete todo dia</h3><p style="font-size:calc(var(--s)*.74)">Na reta final a Rockstar entra em divulgação máxima: material infinito para notícia e rumor.</p></div>
+      <div class="card"><div class="tag">03</div><h3 style="font-size:calc(var(--s)*1.05);margin:calc(var(--s)*.35) 0 calc(var(--s)*.4)">Quem publica primeiro</h3><p style="font-size:calc(var(--s)*.74)">No dia 19 a corrida é de horas. Enquanto o mundo instala o jogo, seus vídeos já estão no ar.</p></div>
+    </div>
+    </div>
+    <aside class="notes">O vídeo chama de "efeito evento": julgamentos, eleições, Copa — assuntos que dominam a internet e fazem o canal de notícias crescer em ritmo anormal. GTA VI é a maior janela da década. Os 20 dias antes são aquecimento; o dia 19 é a corrida de horas.</aside>
+  </section>
+
+  <!-- 4 · VISÃO GERAL -->
+  <section class="slide" aria-hidden="true">
+    <div class="kicker anim" style="--d:0">O plano completo</div>
+    <div class="head anim" style="--d:60">
+      <div class="head-text"><h2>Seis passos, zero desculpa</h2></div>
+      <span class="badge anim" style="--d:100">Do zero ao dia 19</span>
+    </div>
+    <div class="six">
+      <div class="card anim" style="--d:120"><div class="num">01</div><h3>Escolha o caminho</h3><p>Listas, notícias ou lore. Um carro-chefe — a recomendação é A + B.</p></div>
+      <div class="card anim" style="--d:180"><div class="num">02</div><h3>Monte o canal</h3><p>Nome, avatar, banner e descrição. Menos de 30 minutos, no ar hoje.</p></div>
+      <div class="card anim" style="--d:240"><div class="num">03</div><h3>Banco de ideias</h3><p>Espionagem de outliers no YouTube + Google Notícias. 15 a 20 pautas.</p></div>
+      <div class="card anim" style="--d:300"><div class="num">04</div><h3>Linha de produção</h3><p>Roteiro, narração, visual e edição. 1 a 2 horas por vídeo de 5 a 8 min.</p></div>
+      <div class="card anim" style="--d:360"><div class="num">05</div><h3>Thumbnail padrão</h3><p>Imagem forte, um destaque, 2 ou 3 palavras. Sem reinventar o nicho.</p></div>
+      <div class="card anim" style="--d:420"><div class="num">06</div><h3>Calendário</h3><p>D1–5 publicar, D6–15 ritmo, D16–19 véspera armada. Dia 19: executar.</p></div>
+    </div>
+    <div class="note anim" style="--d:500;margin-top:calc(var(--s)*1.6)">Nenhum passo exige console, rosto, equipamento caro ou experiência. Exige <b>começar hoje</b>.</div>
+    <aside class="notes">Visão geral dos seis passos. Use esta tela como índice: cada passo seguinte ganha um slide próprio, na mesma ordem do vídeo.</aside>
+  </section>
+
+  <!-- 5 · PASSO 1 -->
+  <section class="slide" aria-hidden="true">
+    <div class="head anim" style="--d:0">
+      <div class="step-no">01</div>
+      <div class="head-text">
+        <h2>Escolha o caminho</h2>
+        <p class="lead">Três formatos de canal dark de GTA VI. Escolha um como carro-chefe — não tente os três ao mesmo tempo.</p>
+      </div>
+    </div>
+    <div class="grid g3">
+      <div class="card anim" style="--d:120">
+        <div class="tag">Caminho A</div>
+        <h3>Listas</h3>
+        <ul>
+          <li>“10 novidades do GTA 6”</li>
+          <li>“10 segredos do mapa”</li>
+          <li>“10 coisas que a Rockstar mudou”</li>
+        </ul>
+        <p style="margin-top:calc(var(--s)*.8);color:var(--orange)">Mais fácil de produzir e o que mais rende recomendação.</p>
+      </div>
+      <div class="card anim" style="--d:200;border-color:rgba(255,46,136,.45)">
+        <div class="tag">Caminho B · agora</div>
+        <h3>Notícias</h3>
+        <ul>
+          <li>Rumor, trailer, anúncio</li>
+          <li>Toda movimentação da Rockstar</li>
+          <li>Qualquer burburinho vira vídeo</li>
+        </ul>
+        <p style="margin-top:calc(var(--s)*.8);color:var(--orange)">Volume da reta final. É o formato do efeito evento.</p>
+      </div>
+      <div class="card anim" style="--d:280">
+        <div class="tag">Caminho C</div>
+        <h3>Lore</h3>
+        <ul>
+          <li>Histórias e personagens</li>
+          <li>Teorias do universo do jogo</li>
+          <li>Audiência menor, mais fiel</li>
+        </ul>
+        <p style="margin-top:calc(var(--s)*.8);color:var(--orange)">Menos explosivo, porém rende por muito mais tempo.</p>
+      </div>
+    </div>
+    <div class="note anim" style="--d:380;margin-top:calc(var(--s)*1.7)">
+      <span><b>Recomendação para esta janela: A + B.</b> Notícias dão volume agora; listas continuam rendendo depois. Nenhum dos dois precisa de console — todo mundo usa os mesmos trailers, imagens e informações públicas.</span>
+    </div>
+    <div class="note anim" style="--d:440;margin-top:calc(var(--s)*.9);border-left-color:var(--orange)">
+      <span><b>Regra de ouro:</b> o vídeo é a sua leitura sobre o material. Nunca repost cru. Sua opinião e sua experiência são o que mantêm o canal dentro das regras.</span>
+    </div>
+    <aside class="notes">O vídeo é enfático: nenhum caminho precisa de PlayStation 5, porque até depois do lançamento todo canal de GTA trabalha com o mesmo material oficial. A vantagem competitiva é a sua leitura e a sua opinião por cima — não o acesso ao jogo.</aside>
+  </section>
+
+  <!-- 6 · PASSO 2 -->
+  <section class="slide" aria-hidden="true">
+    <div class="head anim" style="--d:0">
+      <div class="step-no">02</div>
+      <div class="head-text">
+        <h2>Canal no ar em 30 minutos</h2>
+        <p class="lead">O nome importa muito menos do que você imagina. Ninguém se inscreve pelo nome — se inscreve pelo conteúdo.</p>
+      </div>
+    </div>
+    <div class="grid g2" style="gap:calc(var(--s)*2)">
+      <div style="display:grid;gap:calc(var(--s)*.9)">
+        <div class="card anim" style="--d:120;display:flex;gap:calc(var(--s)*1);align-items:flex-start">
+          <span class="tag" style="min-width:calc(var(--s)*3)">Nome</span>
+          <p style="font-size:calc(var(--s)*.92)">Simples e direto, com <b style="color:var(--cream)">“GTA”</b> no nome. Ajuda na busca. Não gaste três dias escolhendo.</p>
+        </div>
+        <div class="card anim" style="--d:180;display:flex;gap:calc(var(--s)*1);align-items:flex-start">
+          <span class="tag" style="min-width:calc(var(--s)*3)">Avatar</span>
+          <p style="font-size:calc(var(--s)*.92)">Olhe os canais que já performam no nicho, pegue a referência de estilo e peça a uma IA de imagem a sua versão original do mesmo clima.</p>
+        </div>
+        <div class="card anim" style="--d:240;display:flex;gap:calc(var(--s)*1);align-items:flex-start">
+          <span class="tag" style="min-width:calc(var(--s)*3)">Banner</span>
+          <p style="font-size:calc(var(--s)*.92)">Palavras-chave do nicho: “GTA 6”, “Rockstar”, “listas e notícias”. Nada de inventar conceito.</p>
+        </div>
+        <div class="card anim" style="--d:300;display:flex;gap:calc(var(--s)*1);align-items:flex-start">
+          <span class="tag" style="min-width:calc(var(--s)*3)">Descrição</span>
+          <p style="font-size:calc(var(--s)*.92)">As mesmas palavras-chave do banner, em uma frase clara sobre o que o canal entrega.</p>
+        </div>
+      </div>
+      <div class="card anim" style="--d:200;display:flex;flex-direction:column;justify-content:center;gap:calc(var(--s)*1.2);background:linear-gradient(160deg,rgba(255,46,136,.16),rgba(255,138,61,.05));border-color:rgba(255,46,136,.3)">
+        <div class="tag">O erro que mata a janela</div>
+        <div style="font-family:var(--display);font-size:calc(var(--s)*2.5);line-height:.95;text-transform:uppercase">Passar uma semana<br><span class="accent">preparando</span><br>enquanto o relógio corre</div>
+        <p style="font-size:calc(var(--s)*.95)">O simples não atrasa nada. Imperfeccionismo, sim. Feche este vídeo, crie o canal e coloque no ar hoje.</p>
+      </div>
+    </div>
+    <aside class="notes">Passo 2 é deliberadamente curto. O vídeo insiste que o nome é superestimado; o que importa é ter GTA no nome para busca, um avatar no clima do nicho e palavras-chave no banner e na descrição. Tudo isso em menos de meia hora. O dever de casa é publicar o canal hoje.</aside>
+  </section>
+
+  <!-- 7 · PASSO 3 -->
+  <section class="slide" aria-hidden="true">
+    <div class="head anim" style="--d:0">
+      <div class="step-no">03</div>
+      <div class="head-text">
+        <h2>Banco de ideias por espionagem</h2>
+        <p class="lead">Não invente pauta do zero. Minere o que já está validado, com número público e de graça.</p>
+      </div>
+    </div>
+    <div class="grid g2" style="gap:calc(var(--s)*1.4)">
+      <div class="card anim" style="--d:120;padding:calc(var(--s)*1.7)">
+        <div class="tag">Garimpo 01 · YouTube</div>
+        <h3 style="font-size:calc(var(--s)*1.7)">Caça de outlier</h3>
+        <ul style="margin-top:calc(var(--s)*.6);gap:calc(var(--s)*.7)">
+          <li>Busque “GTA 6 novidades”, “GTA 6 segredos”, “GTA 6 mapa”.</li>
+          <li>Anote os títulos que performam <b style="color:var(--cream)">acima do tamanho do canal</b>.</li>
+          <li>Outlier é o vídeo fora da curva: 410 mil views num canal que faz 150 mil.</li>
+          <li>Isso é demanda provada, não achismo.</li>
+        </ul>
+      </div>
+      <div class="card anim" style="--d:220;padding:calc(var(--s)*1.7)">
+        <div class="tag">Garimpo 02 · Google Notícias</div>
+        <h3 style="font-size:calc(var(--s)*1.7)">Manchete = pauta</h3>
+        <ul style="margin-top:calc(var(--s)*.6);gap:calc(var(--s)*.7)">
+          <li>Pesquise “GTA 6” e abra a aba Notícias.</li>
+          <li>Cada manchete recente é uma pauta pronta.</li>
+          <li>Traduza o material gringo e construa o roteiro em cima.</li>
+          <li>Na reta final, a Rockstar alimenta isso todo dia.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g3 anim" style="--d:320;margin-top:calc(var(--s)*1.4)">
+      <div class="card" style="text-align:center"><div class="stat-big" style="font-size:calc(var(--s)*2.6)">30 min</div><p style="margin-top:calc(var(--s)*.4)">de garimpo</p></div>
+      <div class="card" style="text-align:center"><div class="stat-big" style="font-size:calc(var(--s)*2.6)">15–20</div><p style="margin-top:calc(var(--s)*.4)">pautas na lista</p></div>
+      <div class="card" style="text-align:center"><div class="stat-big" style="font-size:calc(var(--s)*2.6)">0</div><p style="margin-top:calc(var(--s)*.4)">achismo</p></div>
+    </div>
+    <aside class="notes">O vídeo mostra a tela fazendo isso: pesquisa no YouTube, identifica a média de views de um canal e acha o vídeo que estourou (o exemplo foi 410 mil contra uma média de 150 a 200 mil). Depois abre o Google Notícias em GTA 6 e trata cada manchete como pauta. Resultado: 15 a 20 ideias com demanda comprovada em meia hora.</aside>
+  </section>
+
+  <!-- 8 · PASSO 4 -->
+  <section class="slide" aria-hidden="true">
+    <div class="head anim" style="--d:0">
+      <div class="step-no">04</div>
+      <div class="head-text">
+        <h2>A linha de produção mais simples do mundo</h2>
+        <p class="lead">Quatro estações por vídeo. Nenhuma delas exige talento raro.</p>
+      </div>
+    </div>
+    <div class="prod">
+      <div class="card anim" style="--d:120">
+        <div class="n">01 / ROTEIRO</div>
+        <h3>IA como base</h3>
+        <p>Jogue a pauta e peça uma estrutura. Duas obrigações: <b style="color:var(--cream)">revisar os fatos</b> (a IA erra) e <b style="color:var(--cream)">injetar sua opinião</b>.</p>
+      </div>
+      <div class="card anim" style="--d:200">
+        <div class="n">02 / NARRAÇÃO</div>
+        <h3>Sua voz ou TTS</h3>
+        <p>Microfone simples resolve. Se a trava for a própria voz, ElevenLabs e Play.ht entregam qualidade indistinguível.</p>
+      </div>
+      <div class="card anim" style="--d:280">
+        <div class="n">03 / VISUAL</div>
+        <h3>Material oficial</h3>
+        <p>Trailers e imagens divulgadas, cortados e organizados para acompanhar exatamente o que você narra.</p>
+      </div>
+      <div class="card anim" style="--d:360">
+        <div class="n">04 / EDIÇÃO</div>
+        <h3>Corte seco</h3>
+        <p>Trilha de biblioteca segura (Google, Tube Club), texto na tela só nos pontos-chave. Sem firula.</p>
+      </div>
+    </div>
+    <div class="metrics anim" style="--d:440">
+      <div><strong>5–8 min</strong><span>por vídeo</span></div>
+      <div><strong>1–2 h</strong><span>de produção</span></div>
+      <div><strong>0</strong><span>talento raro</span></div>
+      <div><strong>↓</strong><span>cada vídeo mais rápido</span></div>
+    </div>
+    <div class="note anim" style="--d:500;margin-top:calc(var(--s)*1.5)">A IA pode ser a ferramenta. <b>O cérebro do canal é você</b> — e é essa camada humana que evita a política de conteúdo inautêntico.</div>
+    <aside class="notes">O vídeo detalha as quatro estações e diz que, com o fluxo redondo, um vídeo de notícia de 5 a 8 minutos sai em uma ou duas horas — e cada vídeo seguinte sai mais rápido. Alerta importante: roteiro de IA sem revisão erra fatos e, sem camada humana, pode ser enquadrado como conteúdo inautêntico e desmonetizado.</aside>
+  </section>
+
+  <!-- 9 · PASSO 5 -->
+  <section class="slide" aria-hidden="true">
+    <div class="head anim" style="--d:0">
+      <div class="step-no">05</div>
+      <div class="head-text">
+        <h2>A thumbnail padrão do nicho</h2>
+        <p class="lead">Não reinvente. O nicho é descobrir o que funciona — e repetir com a sua identidade de cor.</p>
+      </div>
+    </div>
+    <div class="grid g2" style="gap:calc(var(--s)*2.2);align-items:center">
+      <div class="thumb-demo anim" style="--d:160">
+        <div class="bg"></div>
+        <div class="grid-floor"></div>
+        <div class="pill">GTA 6</div>
+        <div class="txt">Novo<span>mapa</span></div>
+      </div>
+      <div class="rules">
+        <div class="rule-item anim" style="--d:200"><span class="dot"></span><p><b>Imagem forte do jogo</b> ocupando o fundo.</p></div>
+        <div class="rule-item anim" style="--d:260"><span class="dot"></span><p><b>Um elemento recortado em destaque:</b> personagem, carro, arma.</p></div>
+        <div class="rule-item anim" style="--d:320"><span class="dot"></span><p><b>No máximo 2 ou 3 palavras.</b> Fonte grossa, legível no celular.</p></div>
+        <div class="rule-item anim" style="--d:380"><span class="dot"></span><p><b>Mesma identidade de cor</b> em todas as thumbs: consistência gera reconhecimento e fidelidade.</p></div>
+        <div class="rule-item anim" style="--d:440"><span class="dot"></span><p><b>20 minutos</b> no editor de imagem. Clara e rápida de ler — não precisa ser obra de arte.</p></div>
+      </div>
+    </div>
+    <aside class="notes">Passo 5 é sobre padrão, não criatividade. O vídeo manda olhar as thumbnails dos vídeos garimpados no passo 3 e montar as suas no mesmo padrão visual, com a sua cor. Fonte fina e muito texto somem no celular.</aside>
+  </section>
+
+  <!-- 10 · PASSO 6 -->
+  <section class="slide" aria-hidden="true">
+    <div class="head anim" style="--d:0">
+      <div class="step-no">06</div>
+      <div class="head-text">
+        <h2>O calendário dos 20 dias</h2>
+        <p class="lead">É o calendário que transforma passos em resultado. Amarre tudo no tempo.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item anim" style="--d:120">
+        <div class="when">Dias 1–5</div>
+        <h3>Fundação</h3>
+        <p>Canal montado, banco de ideias pronto e <b style="color:var(--cream)">3 primeiros vídeos</b> publicados: 1 lista + 2 notícias/rumores. São o seu treino e o sinal para o algoritmo.</p>
+      </div>
+      <div class="tl-item anim" style="--d:220">
+        <div class="when">Dias 6–15</div>
+        <h3>Ritmo</h3>
+        <p>3 a 4 vídeos por semana seguindo as manchetes. A divulgação da Rockstar vira material infinito. Cada vídeo é um inscrito a mais na plateia do dia 19.</p>
+      </div>
+      <div class="tl-item anim" style="--d:320">
+        <div class="when">Dias 16–19</div>
+        <h3>Véspera</h3>
+        <p>Templates e estruturas dos vídeos de lançamento prontos, faltando só o conteúdo do dia. Nada de editar do zero na hora.</p>
+      </div>
+      <div class="tl-item anim" style="--d:420">
+        <div class="when">Dia 19</div>
+        <h3>Execução</h3>
+        <p>Publique cedo. Enquanto o mundo instala o jogo, seus vídeos já estão no ar colhendo a maior demanda que o nicho já viu.</p>
+      </div>
+    </div>
+    <div class="note anim" style="--d:520;margin-top:calc(var(--s)*2);border-left-color:var(--orange)">
+      <span><b>Começando hoje, com 16 dias:</b> comprima a fundação para 3 dias, mantenha 10 dias de ritmo e reserve 2 dias para a véspera. O desenho é o mesmo; a folga é menor.</span>
+    </div>
+    <aside class="notes">O calendário original pressupõe 20 dias. Como hoje restam 16, a adaptação honesta é encurtar a fundação. O que não pode encurtar é o dia 19: templates prontos e publicação cedo. O vídeo destaca que quem começa depois ainda tem resultado, mas perde a vantagem do canal aquecido.</aside>
+  </section>
+
+  <!-- 11 · RISCOS -->
+  <section class="slide risk" aria-hidden="true">
+    <div class="kicker anim" style="--d:0">O que separa volume de dinheiro</div>
+    <div class="head anim" style="--d:60">
+      <div class="head-text">
+        <h2>O que derruba o canal</h2>
+        <p class="lead">Os quatro erros que fazem o vídeo performar e, ainda assim, não monetizar.</p>
+      </div>
+    </div>
+    <div class="grid g4">
+      <div class="card anim" style="--d:120"><div class="tag">01</div><h3 style="font-size:calc(var(--s)*1.35)">Repost cru</h3><p>Baixar trailer ou imagem e subir sem leitura própria. O vídeo precisa ser a sua interpretação do material.</p></div>
+      <div class="card anim" style="--d:180"><div class="tag">02</div><h3 style="font-size:calc(var(--s)*1.35)">IA sem revisão</h3><p>Roteiro gerado e publicado direto: fato errado, tom genérico e risco de conteúdo inautêntico.</p></div>
+      <div class="card anim" style="--d:240"><div class="tag">03</div><h3 style="font-size:calc(var(--s)*1.35)">Canal 100% robô</h3><p>Sem opinião, vivência ou camada humana. É a política de conteúdo inautêntico derrubando canais dark desde janeiro.</p></div>
+      <div class="card anim" style="--d:300"><div class="tag">04</div><h3 style="font-size:calc(var(--s)*1.35)">Trilha e trecho protegidos</h3><p>Música de biblioteca segura e cuidado com o material oficial. Copyright derruba vídeo de GTA de quem não conhece a regra.</p></div>
+    </div>
+    <div class="note anim" style="--d:400;margin-top:calc(var(--s)*1.8)">O algoritmo premia volume. A monetização premia <b>autenticidade</b>. O plano só funciona com as duas coisas juntas.</div>
+    <aside class="notes">O vídeo lista esses riscos ao falar do treinamento: formatos de lista que morrem, uso de IA sem cair na malha fina, o jeito certo de cortar material oficial, a armadilha de copyright e a regra dos primeiros 7 segundos. Aqui ficam os que dá para aplicar sem o curso.</aside>
+  </section>
+
+  <!-- 12 · MONETIZAÇÃO -->
+  <section class="slide" aria-hidden="true">
+    <div class="kicker anim" style="--d:0">Retorno</div>
+    <div class="head anim" style="--d:60">
+      <div class="head-text">
+        <h2>Como o dinheiro chega</h2>
+        <p class="lead">AdSense é a base, não o teto. O vídeo é explícito: não dá para ganhar só com uma fonte.</p>
+      </div>
+    </div>
+    <div class="money">
+      <div class="card anim" style="--d:120">
+        <div class="val">01</div>
+        <h3 style="font-size:calc(var(--s)*1.45);margin:calc(var(--s)*.7) 0">AdSense</h3>
+        <p>Views qualificadas dentro da janela de CPM mais alta do ano. Um vídeo bem posicionado na semana do lançamento pode pagar meses de produção.</p>
+      </div>
+      <div class="card anim" style="--d:220">
+        <div class="val">02</div>
+        <h3 style="font-size:calc(var(--s)*1.45);margin:calc(var(--s)*.7) 0">Além do AdSense</h3>
+        <p>O vídeo cita “ganhar de todos os lados” sem detalhar: afiliados, patrocínio e produto próprio entram na conta depois que existe audiência.</p>
+      </div>
+      <div class="card anim" style="--d:320">
+        <div class="val">03</div>
+        <h3 style="font-size:calc(var(--s)*1.45);margin:calc(var(--s)*.7) 0">O ativo</h3>
+        <p>Canal aquecido, biblioteca de vídeos e inscritos continuam valendo depois de 19/11. A janela abre a porta; o acervo paga a conta.</p>
+      </div>
+    </div>
+    <div class="note anim" style="--d:420;margin-top:calc(var(--s)*1.9)">Desconfie de quem promete piso. Trabalhe com <b>margem de segurança</b>: produza barato, publique muito e só escale o que provar retenção.</div>
+    <aside class="notes">O vídeo admite que os números de US$ 1.000 a 15.000 por vídeo são exagero, mas mostra um case de 700 mil views que rendeu milhares de dólares. A conclusão prática: a janela paga bem, mas o resultado é distribuição — alguns vídeos estouram, a maioria não.</aside>
+  </section>
+
+  <!-- 13 · 24 HORAS -->
+  <section class="slide" aria-hidden="true">
+    <div class="kicker anim" style="--d:0">Comece agora</div>
+    <div class="head anim" style="--d:60">
+      <div class="head-text">
+        <h2>Suas próximas 24 horas</h2>
+        <p class="lead">Um dia de execução vale mais que uma semana de pesquisa. A ordem abaixo é a do vídeo.</p>
+      </div>
+    </div>
+    <div class="grid g4">
+      <div class="card anim" style="--d:120"><div class="tag">30 min</div><h3 style="font-size:calc(var(--s)*1.3)">Canal no ar</h3><p>Nome com GTA, avatar gerado por IA, banner e descrição com palavras-chave.</p></div>
+      <div class="card anim" style="--d:180"><div class="tag">30 min</div><h3 style="font-size:calc(var(--s)*1.3)">15 pautas</h3><p>YouTube outliers + Google Notícias. Salve os títulos e as manchetes numa lista.</p></div>
+      <div class="card anim" style="--d:240"><div class="tag">2 h</div><h3 style="font-size:calc(var(--s)*1.3)">Vídeo 1</h3><p>Lista com os melhores achados do garimpo. Roteiro revisado, sua voz, corte seco.</p></div>
+      <div class="card anim" style="--d:300"><div class="tag">Hoje</div><h3 style="font-size:calc(var(--s)*1.3)">Publicar</h3><p>Thumbnail padrão, 2 ou 3 palavras. Sem buscar perfeição: o primeiro vídeo é treino.</p></div>
+    </div>
+    <div class="note anim" style="--d:380;margin-top:calc(var(--s)*2)">
+      <span>Meta até 19/11: <b>12 a 15 vídeos no ar</b>, 3 a 4 por semana, e os templates de lançamento prontos no dia 16.</span>
+    </div>
+    <aside class="notes">Feche a apresentação com compromisso de execução. O vídeo insiste que o primeiro vídeo não precisa ser bom — precisa existir. Três vídeos nos primeiros dias já ensinam o algoritmo sobre o seu canal.</aside>
+  </section>
+
+  <!-- 14 · FECHAMENTO -->
+  <section class="slide final" aria-hidden="true">
+    <div class="kicker anim" style="--d:0;justify-content:center">19 de novembro de 2026</div>
+    <div class="big anim" style="--d:100">19.11</div>
+    <div class="phrase anim" style="--d:220">Quem publica primeiro, colhe.</div>
+    <div class="sub anim" style="--d:320">O relógio já está correndo</div>
+    <div class="source anim" style="--d:420">Baseado no vídeo “Faltam 20 dias! Crie seu canal de GTA 6”. Os seis passos, números e citações vêm do conteúdo; a adaptação para 16 dias e as observações de monetização estão sinalizadas. O treinamento pago citado no vídeo não é pré-requisito para executar o plano.</div>
+    <aside class="notes">Encerramento. Se quiser uma única frase de ação: abra uma aba, crie o canal e publique o primeiro vídeo antes de dormir. Qualquer coisa além disso é otimização.</aside>
+  </section>
+
+</main>
+
+<div class="hud">
+  <div class="counter"><b id="cur">01</b> / <span id="tot">14</span></div>
+  <div class="hint">← → · N notas · F tela cheia</div>
+  <button id="notesBtn" type="button">Notas</button>
+</div>
+
+<div class="notes-panel" id="notesPanel">
+  <div class="np-title">Notas do apresentador</div>
+  <div id="notesBody"></div>
+</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const bar = document.getElementById('bar');
+  const cur = document.getElementById('cur');
+  const tot = document.getElementById('tot');
+  const notesBody = document.getElementById('notesBody');
+  let i = 0;
+
+  tot.textContent = String(slides.length).padStart(2, '0');
+
+  function render(){
+    slides.forEach((s, k) => {
+      const on = k === i;
+      s.classList.toggle('active', on);
+      s.setAttribute('aria-hidden', String(!on));
+    });
+    cur.textContent = String(i + 1).padStart(2, '0');
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    notesBody.innerHTML = slides[i].querySelector('.notes')?.innerHTML || '<em>Sem notas neste slide.</em>';
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  function go(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    render();
+  }
+
+  const fromHash = parseInt(location.hash.slice(1), 10);
+  if (fromHash) i = Math.max(0, Math.min(slides.length - 1, fromHash - 1));
+  render();
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); go(i + 1); }
+    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); go(i - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    if (e.key.toLowerCase() === 'n') document.body.classList.toggle('notes-on');
+    if (e.key.toLowerCase() === 'f') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+  });
+
+  document.getElementById('notesBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    document.body.classList.toggle('notes-on');
+  });
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('button, a, .notes-panel')) return;
+    if (e.clientX < window.innerWidth * 0.3) go(i - 1); else go(i + 1);
+  });
+
+  let x0 = null;
+  addEventListener('touchstart', e => x0 = e.touches[0].clientX, {passive:true});
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, {passive:true});
+</script>
+</body>
+</html>

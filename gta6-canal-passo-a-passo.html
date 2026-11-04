@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>GTA VI — Passo a passo para criar o canal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#06040b;
+    --ink-2:#0c0716;
+    --panel:#100a1a;
+    --cream:#f7eee6;
+    --muted:#b3a7c4;
+    --pink:#ff2e88;
+    --orange:#ff8a3d;
+    --violet:#7b5cff;
+    --line:rgba(247,238,230,.12);
+    --display:'Anton','Impact',sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:96px}
+  body{
+    background:var(--ink);color:var(--cream);font-family:var(--body);
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 55% 40% at 85% -5%,rgba(255,46,136,.16),transparent 65%),
+      radial-gradient(ellipse 50% 40% at 0% 100%,rgba(255,138,61,.12),transparent 60%);
+  }
+  .grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ---------- top bar ---------- */
+  .top{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(6,4,11,.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .top-inner{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:24px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);text-transform:uppercase;letter-spacing:.02em;font-size:18px;white-space:nowrap}
+  .brand b{color:var(--pink)}
+  .brand span{font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:var(--muted);border-left:1px solid var(--line);padding-left:12px}
+  .nav{display:flex;gap:18px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{color:var(--muted);text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;padding:6px 0;border-bottom:1px solid transparent}
+  .nav a:hover{color:var(--cream);border-bottom-color:var(--pink)}
+  .progress{height:2px;background:transparent}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--orange));transition:width .3s ease}
+
+  /* ---------- layout ---------- */
+  .wrap{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:120px 24px 80px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px}
+  .toc{position:sticky;top:110px;align-self:start;border-left:1px solid var(--line);padding-left:20px}
+  .toc .t{font-family:var(--mono);font-size:9px;letter-spacing:.24em;color:var(--pink);text-transform:uppercase;margin-bottom:14px}
+  .toc ol{list-style:none;display:grid;gap:9px}
+  .toc a{color:var(--muted);text-decoration:none;font-size:12.5px;line-height:1.35;display:flex;gap:9px}
+  .toc a:hover{color:var(--cream)}
+  .toc a b{font-family:var(--mono);font-size:10px;color:rgba(255,46,136,.8);font-weight:400;padding-top:2px}
+
+  main{min-width:0}
+
+  /* ---------- hero ---------- */
+  .hero{padding-bottom:46px;border-bottom:1px solid var(--line)}
+  .kicker{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--pink);margin-bottom:20px}
+  .kicker::before{content:"";width:40px;height:1px;background:var(--pink)}
+  h1{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.92;font-size:clamp(38px,6vw,76px);letter-spacing:.005em}
+  h1 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--pink)}
+  .lead{font-size:18px;line-height:1.55;color:var(--muted);max-width:62ch;margin-top:20px;font-weight:300}
+  .meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:28px}
+  .meta div{display:grid;gap:2px}
+  .meta small{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .meta strong{font-family:var(--display);font-size:17px;font-weight:400;letter-spacing:.03em}
+
+  /* ---------- sections ---------- */
+  section{padding:52px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:26px}
+  .num{
+    flex:none;width:42px;height:42px;border-radius:50%;
+    display:grid;place-items:center;font-family:var(--display);font-size:17px;color:var(--ink);
+    background:linear-gradient(135deg,var(--pink),var(--orange));
+    box-shadow:0 0 28px rgba(255,46,136,.3);
+  }
+  h2{font-family:var(--display);font-weight:400;text-transform:uppercase;line-height:.95;font-size:clamp(26px,3.4vw,40px);letter-spacing:.01em}
+  .sec-head p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:64ch;font-weight:300}
+  h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:19px;letter-spacing:.02em;margin:26px 0 10px}
+  p{color:var(--muted);font-weight:300}
+  p strong,li strong{color:var(--cream);font-weight:600}
+  a{color:var(--pink)}
+  .steps{counter-reset:s;display:grid;gap:14px;margin:18px 0}
+  .steps > li{list-style:none;position:relative;padding-left:40px;color:var(--muted);font-weight:300}
+  .steps > li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;font-family:var(--mono);font-size:11px;color:var(--pink);border:1px solid rgba(255,46,136,.4);width:24px;height:24px;border-radius:50%;display:grid;place-items:center}
+  code,.path{font-family:var(--mono);font-size:.84em;color:var(--cream);background:rgba(255,255,255,.06);border:1px solid var(--line);padding:2px 6px;border-radius:4px;white-space:nowrap}
+  .note{border-left:2px solid var(--pink);padding:2px 0 2px 16px;margin:20px 0;color:var(--cream);font-size:14.5px;font-weight:300}
+  .note.warn{border-left-color:var(--orange)}
+  .note b{font-weight:600}
+  ul.plain{list-style:none;display:grid;gap:8px;margin:12px 0}
+  ul.plain li{position:relative;padding-left:18px;color:var(--muted);font-weight:300}
+  ul.plain li::before{content:"";position:absolute;left:0;top:.65em;width:7px;height:1px;background:var(--pink)}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .card{background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012));border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h4{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin-bottom:6px}
+  .card p{font-size:13px;line-height:1.5}
+  .card .tag{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--orange);text-transform:uppercase}
+
+  /* ---------- checklist ---------- */
+  .checklist{display:grid;gap:2px;margin:14px 0}
+  .check{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border-radius:8px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+  .check:hover{background:rgba(255,255,255,.035)}
+  .check input{appearance:none;flex:none;width:18px;height:18px;border:1px solid rgba(247,238,230,.35);border-radius:4px;margin-top:2px;cursor:pointer;position:relative;transition:all .15s}
+  .check input:checked{background:linear-gradient(135deg,var(--pink),var(--orange));border-color:transparent}
+  .check input:checked::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;border:2px solid #06040b;border-top:0;border-left:0;transform:rotate(45deg)}
+  .check span{font-size:14px;color:var(--muted);line-height:1.5;font-weight:300}
+  .check input:checked + span{color:rgba(179,167,196,.55);text-decoration:line-through;text-decoration-color:rgba(255,46,136,.5)}
+  .check span b{color:var(--cream);font-weight:600}
+  .check input:checked + span b{color:rgba(179,167,196,.55)}
+
+  /* ---------- copy blocks ---------- */
+  .copybox{position:relative;background:#0a0612;border:1px solid var(--line);border-radius:10px;margin:14px 0;overflow:hidden}
+  .copybox .bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.025)}
+  .copybox .bar span{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .copybox button{border:1px solid rgba(247,238,230,.18);background:none;color:var(--cream);font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:5px 9px;border-radius:99px;cursor:pointer;transition:.15s}
+  .copybox button:hover{border-color:var(--pink);color:var(--pink)}
+  .copybox button.done{border-color:var(--pink);color:var(--pink)}
+  .copybox pre{white-space:pre-wrap;word-break:break-word;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.7;color:#d8cfe4}
+
+  /* ---------- table ---------- */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+  th{text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);font-weight:400}
+  td{padding:11px 12px;border-bottom:1px solid rgba(247,238,230,.07);color:var(--muted);vertical-align:top;font-weight:300}
+  td b{color:var(--cream);font-weight:600}
+  tr:hover td{background:rgba(255,255,255,.02)}
+
+  /* ---------- banner diagram ---------- */
+  .banner-demo{aspect-ratio:16/9;border:1px solid var(--line);border-radius:10px;position:relative;overflow:hidden;margin:18px 0;background:
+    radial-gradient(circle at 75% 30%,rgba(255,138,61,.55),transparent 55%),
+    radial-gradient(circle at 25% 80%,rgba(255,46,136,.5),transparent 60%),
+    linear-gradient(160deg,#2a0f2e,#0b0512 65%)}
+  .banner-demo .safe{position:absolute;inset:31.5% 30%;border:1px dashed rgba(247,238,230,.55);border-radius:6px;display:grid;place-items:center;text-align:center;padding:8px}
+  .banner-demo .safe span{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(247,238,230,.85);line-height:1.8}
+  .banner-demo .lbl{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:rgba(247,238,230,.5);text-transform:uppercase}
+
+  /* ---------- footer ---------- */
+  footer{padding:44px 0 20px;color:var(--muted);font-size:12px;font-weight:300}
+  footer b{color:var(--cream)}
+  .reset{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--muted);padding:7px 12px;border-radius:99px;cursor:pointer;margin-top:16px}
+  .reset:hover{border-color:var(--pink);color:var(--pink)}
+
+  .count-pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:6px 12px;margin-top:18px}
+  .count-pill b{color:var(--pink)}
+
+  @media (max-width:900px){
+    .wrap{grid-template-columns:1fr;padding-top:100px;gap:0}
+    .toc{display:none}
+    .grid-2,.grid-3{grid-template-columns:1fr}
+    .nav{display:none}
+    .top-inner{padding:10px 16px}
+    .brand span{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  @media print{
+    @page{size:A4;margin:14mm}
+    body{background:#fff;color:#111;font-size:11pt}
+    body::before,.grain,.top,.toc,.reset,.copybox button{display:none!important}
+    .wrap{display:block;padding:0;max-width:none}
+    section{border-bottom:1px solid #ddd;page-break-inside:avoid}
+    h1,h2,h3,.card h4{color:#111}
+    .lead,p,td,.check span,ul.plain li,li{color:#333}
+    .num{color:#fff;background:#c2185b;box-shadow:none}
+    .copybox,.card,.banner-demo{border-color:#ccc;background:#fafafa}
+    .copybox pre{color:#222}
+    .check input{border-color:#999}
+    a{color:#111}
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><b>GTA VI</b> · canal <span>passo a passo</span></div>
+    <nav class="nav">
+      <a href="#antes">Antes</a>
+      <a href="#criar">Criar</a>
+      <a href="#nome">Nome</a>
+      <a href="#visual">Visual</a>
+      <a href="#descricao">Descrição</a>
+      <a href="#config">Config</a>
+      <a href="#primeiro">1º vídeo</a>
+      <a href="#monetizacao">Monetização</a>
+    </nav>
+  </div>
+  <div class="progress"><i id="progressBar"></i></div>
+</header>
+
+<div class="wrap">
+  <aside class="toc">
+    <div class="t">Neste guia</div>
+    <ol>
+      <li><a href="#antes"><b>00</b> Antes de começar</a></li>
+      <li><a href="#criar"><b>01</b> Criar o canal</a></li>
+      <li><a href="#nome"><b>02</b> Nome e @handle</a></li>
+      <li><a href="#visual"><b>03</b> Identidade visual</a></li>
+      <li><a href="#descricao"><b>04</b> Descrição e links</a></li>
+      <li><a href="#config"><b>05</b> Configurações</a></li>
+      <li><a href="#verificar"><b>06</b> Verificação</a></li>
+      <li><a href="#primeiro"><b>07</b> Primeiro vídeo</a></li>
+      <li><a href="#monetizacao"><b>08</b> Monetização</a></li>
+      <li><a href="#rotina"><b>09</b> Rotina semanal</a></li>
+    </ol>
+    <div class="count-pill"><b id="done">0</b>/<span id="total">0</span> concluídos</div>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <div class="kicker">Guia operacional · 30 minutos</div>
+      <h1>Seu canal<br>no ar <em>hoje</em></h1>
+      <p class="lead">O caminho exato do zero ao primeiro vídeo: criar a conta, montar a identidade, configurar o canal e deixar tudo pronto para monetizar quando a janela do GTA VI abrir.</p>
+      <div class="meta">
+        <div><small>Tempo</small><strong>30 min</strong></div>
+        <div><small>Custo</small><strong>R$ 0</strong></div>
+        <div><small>Requisito</small><strong>Conta Google</strong></div>
+        <div><small>Nível</small><strong>Zero</strong></div>
+      </div>
+    </div>
+
+    <!-- 00 -->
+    <section id="antes">
+      <div class="sec-head">
+        <div class="num">00</div>
+        <div>
+          <h2>Antes de clicar em criar</h2>
+          <p>Três decisões que evitam retrabalho depois. Não pule esta parte: mudar de conta ou de identidade com o canal já rodando custa tempo.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card"><div class="tag">Decisão 1</div><h4>Conta dona</h4><p>Use uma conta Google dedicada ao projeto. Se um dia entrar sócio ou editor, ele não precisa da sua conta pessoal.</p></div>
+        <div class="card"><div class="tag">Decisão 2</div><h4>Tipo de canal</h4><p>Para marca, crie uma <b>Conta do YouTube</b> (Brand Account). Permite vários canais e acesso de equipe sem compartilhar senha.</p></div>
+        <div class="card"><div class="tag">Decisão 3</div><h4>Nicho e caminho</h4><p>Defina agora: listas, notícias ou lore. A recomendação do plano é <b>notícias + listas</b>.</p></div>
+      </div>
+
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-k="g1"><span>Conta Google criada e com <b>verificação em duas etapas</b> ativa.</span></label>
+        <label class="check"><input type="checkbox" data-k="g2"><span>Nome do projeto definido (pode ser provisório, mas precisa ter “GTA” para busca).</span></label>
+        <label class="check"><input type="checkbox" data-k="g3"><span>Decidido se o canal será <b>pessoal</b> ou <b>Conta do YouTube</b> (marca).</span></label>
+      </div>
+
+      <div class="note">A verificação em duas etapas é obrigatória para ativar a monetização mais adiante. Ative agora, não depois.</div>
+    </section>
+
+    <!-- 01 -->
+    <section id="criar">
+      <div class="sec-head">
+        <div class="num">01</div>
+        <div>
+          <h2>Criar o canal</h2>
+          <p>O processo leva menos de dois minutos. O que atrasa é ficar escolhendo nome — deixe para o passo 02, com opções prontas.</p>
+        </div>
+      </div>
+
+      <ol class="steps">
+        <li>Abra <a href="https://youtube.com" target="_blank" rel="noopener">youtube.com</a> logado na conta Google que vai ser dona do canal.</li>
+        <li>Clique no <b>avatar</b> no canto superior direito → <span class="path">Criar um canal</span>.</li>
+        <li>Escolha <b>“Usar nome da marca”</b> se quiser uma Conta do YouTube. É o formato certo para um projeto que pode ter equipe.</li>
+        <li>Digite o nome (pode ser ajustado depois) e confirme. O canal já existe, mesmo sem vídeo.</li>
+        <li>Abra o <b>YouTube Studio</b> em <span class="path">studio.youtube.com</span>. É lá que 90% da configuração acontece.</li>
+      </ol>
+
+      <div class="note"><b>Se o YouTube pedir verificação por telefone</b> logo no início, faça na hora: é a mesma verificação que libera thumbnail personalizada e vídeos com mais de 15 minutos.</div>
+    </section>
+
+    <!-- 02 -->
+    <section id="nome">
+      <div class="sec-head">
+        <div class="num">02</div>
+        <div>
+          <h2>Nome e @handle</h2>
+          <p>O nome é o menos importante do projeto — mas precisa ser encontrável. Regra: claro, com “GTA”, sem parecer canal oficial da Rockstar.</p>
+        </div>
+      </div>
+
+      <div class="copybox">
+        <div class="bar"><span>5 opções de nome</span><button data-copy="names">Copiar</button></div>
+<pre id="names">GTA 6 em Foco
+Leonida Notícias
+GTA 6 Diário
+Tudo Sobre GTA 6
+Vice City News BR</pre>
+      </div>
+
+      <div class="copybox">
+        <div class="bar"><span>Handles correspondentes</span><button data-copy="handles">Copiar</button></div>
+<pre id="handles">@gta6emfoco
+@leonidanoticias
+@gta6diario
+@tudosobregta6
+@vicecitynewsbr</pre>
+      </div>
+
+      <ul class="plain">
+        <li><b>Handle:</b> 3 a 30 caracteres, com letras, números, ponto, hífen ou underline. É o endereço <span class="path">youtube.com/@seunome</span>.</li>
+        <li><b>Nome do canal:</b> até 100 caracteres, mas mantenha curto para caber no celular.</li>
+        <li><b>Evite:</b> “oficial”, “Rockstar” ou qualquer coisa que sugira vínculo com a produtora.</li>
+        <li><b>Não gaste mais de 10 minutos</b> nessa escolha. O conteúdo é que traz inscrito.</li>
+      </ul>
+
+      <div class="note warn"><b>Verifique a disponibilidade do @handle</b> antes de definir o nome. Se estiver ocupado, troque o nome agora — não depois de publicar.</div>
+    </section>
+
+    <!-- 03 -->
+    <section id="visual">
+      <div class="sec-head">
+        <div class="num">03</div>
+        <div>
+          <h2>Identidade visual</h2>
+          <p>Avatar, banner e marca d’água saem em 20 minutos com IA. O segredo é pedir o formato certo e manter a mesma paleta em tudo.</p>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>Peça</th><th>Tamanho</th><th>O que importa</th></tr></thead>
+        <tbody>
+          <tr><td><b>Avatar</b></td><td>800 × 800 px</td><td>Legível em 98 × 98 px. Sem texto pequeno.</td></tr>
+          <tr><td><b>Banner</b></td><td>2048 × 1152 px</td><td>Área segura central de <b>1235 × 338 px</b> — o resto é cortado no celular.</td></tr>
+          <tr><td><b>Marca d’água</b></td><td>150 × 150 px</td><td>Opcional. Um símbolo só, sem palavras.</td></tr>
+          <tr><td><b>Thumbnail</b></td><td>1280 × 720 px</td><td>Máximo 2 MB, JPG ou PNG. Padrão definido no deck.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="banner-demo">
+        <div class="safe"><span>ÁREA SEGURA<br>1235 × 338 px<br>nome + promessa do canal</span></div>
+        <div class="lbl">2048 × 1152 px · o que fica fora da moldura some no celular</div>
+      </div>
+
+      <div class="copybox">
+        <div class="bar"><span>Prompt · avatar</span><button data-copy="promptAvatar">Copiar</button></div>
+<pre id="promptAvatar">Avatar quadrado para canal de YouTube sobre GTA 6. Ilustração digital com paleta neon rosa magenta e laranja sobre fundo escuro, skyline estilizado de Miami e palmeiras, silhueta de carro esportivo, alto contraste, composição centralizada, sem texto, sem logotipos, sem personagens reais. Estilo limpo e legível em tamanho pequeno.</pre>
+      </div>
+
+      <div class="copybox">
+        <div class="bar"><span>Prompt · banner</span><button data-copy="promptBanner">Copiar</button></div>
+<pre id="promptBanner">Banner horizontal 2048x1152 para canal de YouTube sobre GTA 6. Fundo com pôr do sol em degradê rosa, laranja e roxo, skyline de Miami e palmeiras em silhueta, textura de grade neon. Manter o centro da imagem limpo e com alto contraste para receber texto depois. Sem texto, sem logotipos, sem personagens reais.</pre>
+      </div>
+
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-k="v1"><span>Avatar gerado e cortado em <b>800 × 800</b>.</span></label>
+        <label class="check"><input type="checkbox" data-k="v2"><span>Banner pronto com o texto dentro da área segura.</span></label>
+        <label class="check"><input type="checkbox" data-k="v3"><span>Paleta fixada: rosa <b>#FF2E88</b>, laranja <b>#FF8A3D</b> e fundo escuro. Use a mesma em todas as thumbnails.</span></label>
+        <label class="check"><input type="checkbox" data-k="v4"><span>Upload feito em <span class="path">Studio → Personalização → Branding</span>.</span></label>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section id="descricao">
+      <div class="sec-head">
+        <div class="num">04</div>
+        <div>
+          <h2>Descrição e links</h2>
+          <p>As duas primeiras linhas aparecem na busca. Elas precisam dizer o que o canal entrega e conter as palavras-chave do nicho.</p>
+        </div>
+      </div>
+
+      <div class="copybox">
+        <div class="bar"><span>Descrição do canal · pronta para adaptar</span><button data-copy="desc">Copiar</button></div>
+<pre id="desc">Tudo sobre GTA 6: notícias, listas e teorias atualizadas toda semana.
+
+Acompanhe trailers, imagens oficiais e cada movimento da Rockstar com análise e contexto — sem enrolação e sem repost.
+
+NOTÍCIAS — rumores, anúncios e novidades em primeira mão
+LISTAS — segredos, mapas e detalhes que passam batido
+TEORIAS — personagens, história e o universo de Leonida
+
+Novos vídeos 3 vezes por semana. Inscreva-se e ative o sino para chegar no dia 19 por dentro.
+
+#GTA6 #GTAVI #RockstarGames</pre>
+      </div>
+
+      <ul class="plain">
+        <li><b>Primeira linha:</b> repetir “GTA 6” + o que o canal faz. É o trecho que o YouTube usa como resumo.</li>
+        <li><b>Links:</b> só coloque depois que existirem. Canal vazio com link de afiliado passa impressão de spam.</li>
+        <li><b>E-mail de contato:</b> crie um endereço separado (<span class="path">canal@gmail.com</span>) e coloque em <span class="path">Sobre → Detalhes</span>.</li>
+        <li><b>Palavras-chave do canal:</b> <span class="path">GTA 6, GTA VI, Rockstar, notícias GTA 6, listas GTA 6, Leonida</span>.</li>
+      </ul>
+    </section>
+
+    <!-- 05 -->
+    <section id="config">
+      <div class="sec-head">
+        <div class="num">05</div>
+        <div>
+          <h2>Configurações que evitam retrabalho</h2>
+          <p>Cinco ajustes no Studio. Faça uma vez e cada upload seguinte nasce pronto.</p>
+        </div>
+      </div>
+
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-k="c1"><span><b>País e moeda:</b> <span class="path">Studio → Configurações → Geral</span>. Brasil e BRL.</span></label>
+        <label class="check"><input type="checkbox" data-k="c2"><span><b>Palavras-chave do canal</b> preenchidas com os termos do nicho.</span></label>
+        <label class="check"><input type="checkbox" data-k="c3"><span><b>Padrões de upload:</b> título, descrição, tags, categoria <b>Jogos</b> e visibilidade <b>Não listado</b> até revisar.</span></label>
+        <label class="check"><input type="checkbox" data-k="c4"><span><b>Comentários:</b> “reter comentários potencialmente inadequados para revisão”.</span></label>
+        <label class="check"><input type="checkbox" data-k="c5"><span><b>Playlists criadas:</b> Notícias, Listas, Teorias — mesmo que vazias.</span></label>
+      </div>
+
+      <div class="copybox">
+        <div class="bar"><span>Descrição padrão de upload</span><button data-copy="uploadDesc">Copiar</button></div>
+<pre id="uploadDesc">O que você vai ver neste vídeo:
+
+00:00 Abertura
+00:40 O que a Rockstar confirmou
+02:10 O que ainda é rumor
+04:30 O que isso muda no jogo
+06:10 Minha aposta
+
+Fontes: material oficial divulgado pela Rockstar e notícias públicas.
+Este vídeo é uma análise independente e não tem vínculo com a Rockstar Games.
+
+#GTA6 #GTAVI #Rockstar</pre>
+      </div>
+
+      <div class="note">Os capítulos só aparecem se o vídeo tiver <b>pelo menos 3 capítulos</b> e o primeiro começar em <b>00:00</b>. O YouTube usa os capítulos como sinal de qualidade e retenção.</div>
+    </section>
+
+    <!-- 06 -->
+    <section id="verificar">
+      <div class="sec-head">
+        <div class="num">06</div>
+        <div>
+          <h2>Verificação e recursos liberados</h2>
+          <p>Uma verificação por telefone destrava o que separa um canal amador de um canal profissional.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card"><div class="tag">Libera</div><h4>Thumbnail personalizada</h4><p>Sem ela, o YouTube escolhe um frame automático — e a thumbnail é metade do CTR.</p></div>
+        <div class="card"><div class="tag">Libera</div><h4>Vídeos acima de 15 min</h4><p>Útil para compilados e análises longas depois do lançamento.</p></div>
+        <div class="card"><div class="tag">Libera</div><h4>Transmissão ao vivo</h4><p>Lives de lançamento e reação no dia 19, quando a audiência está no pico.</p></div>
+        <div class="card"><div class="tag">Libera</div><h4>Limite de upload maior</h4><p>Conta verificada tem teto diário maior — útil na semana de lançamento, quando cada hora conta.</p></div>
+      </div>
+
+      <ol class="steps">
+        <li>Acesse <a href="https://youtube.com/verify" target="_blank" rel="noopener">youtube.com/verify</a>.</li>
+        <li>Escolha o país e o método (SMS ou chamada).</li>
+        <li>Digite o código de 6 dígitos recebido.</li>
+        <li>Volte ao Studio e confirme que os recursos apareceram em <span class="path">Configurações → Canal → Recursos</span>.</li>
+      </ol>
+
+      <div class="note warn"><b>Não use número virtual</b> de recebimento de SMS. A verificação pode cair depois e travar a monetização.</div>
+    </section>
+
+    <!-- 07 -->
+    <section id="primeiro">
+      <div class="sec-head">
+        <div class="num">07</div>
+        <div>
+          <h2>O primeiro vídeo</h2>
+          <p>Formato enxuto: uma lista curta com os melhores achados do garimpo. O objetivo não é perfeição — é ensinar o algoritmo sobre o canal.</p>
+        </div>
+      </div>
+
+      <h3>Antes de gravar</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-k="p1"><span>Pauta escolhida entre as 15 do banco de ideias, com <b>outlier comprovado</b>.</span></label>
+        <label class="check"><input type="checkbox" data-k="p2"><span>Roteiro em 5 blocos: gancho, promessa, 3 a 5 itens, opinião, próximo vídeo.</span></label>
+        <label class="check"><input type="checkbox" data-k="p3"><span>Material oficial baixado: trailer, imagens e prints das notícias.</span></label>
+      </div>
+
+      <h3>Na hora de subir</h3>
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-k="p4"><span><b>Título</b> com a palavra-chave no começo, até 65 caracteres.</span></label>
+        <label class="check"><input type="checkbox" data-k="p5"><span><b>Descrição</b> com as duas primeiras linhas vendendo o vídeo + capítulos + fonte.</span></label>
+        <label class="check"><input type="checkbox" data-k="p6"><span><b>Thumbnail</b> no padrão: imagem forte, um destaque, 2 ou 3 palavras.</span></label>
+        <label class="check"><input type="checkbox" data-k="p7"><span>Adicionado à playlist certa e com <b>tela final</b> apontando para outro vídeo.</span></label>
+        <label class="check"><input type="checkbox" data-k="p8"><span>Público: <b>“não é conteúdo infantil”</b>. Restrição de idade desligada.</span></label>
+        <label class="check"><input type="checkbox" data-k="p9"><span>Vídeo publicado como <b>público</b> — não deixe em não listado.</span></label>
+      </div>
+
+      <div class="note">Os <b>7 primeiros segundos</b> decidem se o espectador fica. Entregue a promessa do título de imediato: nada de intro longa, logo animado ou “sejam bem-vindos ao canal”.</div>
+
+      <div class="copybox">
+        <div class="bar"><span>3 estruturas de título que funcionam no nicho</span><button data-copy="titles">Copiar</button></div>
+<pre id="titles">GTA 6: as 7 novidades das imagens oficiais que ninguém comentou
+GTA 6: o que a Rockstar confirmou (e o que ainda é rumor)
+GTA 6: 5 detalhes do mapa que mudam tudo no lançamento</pre>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section id="monetizacao">
+      <div class="sec-head">
+        <div class="num">08</div>
+        <div>
+          <h2>Monetização</h2>
+          <p>Não existe botão de “ganhar dinheiro”. Existe elegibilidade, análise e configuração. A ordem abaixo evita perder tempo.</p>
+        </div>
+      </div>
+
+      <h3>Requisitos do YouTube Partner Program</h3>
+      <table>
+        <thead><tr><th>Nível</th><th>Exigência</th><th>O que libera</th></tr></thead>
+        <tbody>
+          <tr><td><b>Completo</b></td><td>1.000 inscritos + 4.000 horas públicas nos últimos 12 meses <b>ou</b> 10 milhões de views de Shorts em 90 dias</td><td>Anúncios, membros, Super Chat e Shopping</td></tr>
+          <tr><td><b>Acesso antecipado</b></td><td>500 inscritos + 3 uploads públicos em 90 dias + 3.000 horas públicas <b>ou</b> 3 milhões de views de Shorts em 90 dias</td><td>Membros, Super Chat e Shopping (sem anúncios)</td></tr>
+          <tr><td><b>Pré-requisitos</b></td><td>País elegível, sem strikes, verificação em duas etapas, AdSense vinculado e dados fiscais</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Ordem de configuração</h3>
+      <ol class="steps">
+        <li>Ative a <b>verificação em duas etapas</b> na conta Google.</li>
+        <li>No Studio, abra <span class="path">Monetização</span> e aceite os termos do programa.</li>
+        <li>Crie ou vincule uma conta <b>AdSense</b>. O endereço precisa ser real: chega um PIN por carta.</li>
+        <li>Preencha os <b>dados fiscais</b>. Residente no Brasil envia o formulário W-8BEN; na dúvida, fale com um contador.</li>
+        <li>Ative os anúncios. Em vídeos com 8 minutos ou mais, marque os mid-rolls nos pontos de virada.</li>
+        <li>Aguarde a análise. Pode levar <b>até um mês</b>; não reenvie pedido no meio do processo.</li>
+      </ol>
+
+      <div class="note warn"><b>O que reprova o pedido:</b> conteúdo reutilizado sem valor agregado, vídeos feitos só com IA e narração genérica, material de terceiros sem comentário, música protegida e inscritos comprados. O plano do deck já nasce protegido contra isso — narração e leitura próprias em cima do material oficial.</div>
+
+      <h3>Quando o dinheiro cai</h3>
+      <ul class="plain">
+        <li>O AdSense paga quando o saldo passa de <b>US$ 100</b>, mensalmente.</li>
+        <li>O primeiro pagamento costuma demorar mais por causa da validação do PIN e dos dados fiscais.</li>
+        <li>CPM de games sobe na janela de lançamento. É a melhor hora para ter volume publicado.</li>
+      </ul>
+    </section>
+
+    <!-- 09 -->
+    <section id="rotina">
+      <div class="sec-head">
+        <div class="num">09</div>
+        <div>
+          <h2>Rotina semanal</h2>
+          <p>O canal não cresce por um vídeo bom. Cresce por um sistema que se repete mesmo nos dias ruins.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card"><div class="tag">Segunda · 30 min</div><h4>Garimpo</h4><p>YouTube outliers + Google Notícias. Saia com 5 pautas novas na lista.</p></div>
+        <div class="card"><div class="tag">Terça a quinta</div><h4>Produção</h4><p>3 vídeos de 5 a 8 minutos. Roteiro revisado, narração, corte seco.</p></div>
+        <div class="card"><div class="tag">Sexta · 20 min</div><h4>Leitura de dados</h4><p>CTR, retenção média e impressões. Dobre o que passou da média; corte o que não.</p></div>
+      </div>
+
+      <div class="checklist">
+        <label class="check"><input type="checkbox" data-k="r1"><span>Publicar <b>3 a 4 vídeos por semana</b> até 19/11.</span></label>
+        <label class="check"><input type="checkbox" data-k="r2"><span>Nenhum vídeo sobe sem thumbnail e descrição completas.</span></label>
+        <label class="check"><input type="checkbox" data-k="r3"><span>Revisar a meta semanal todo domingo e ajustar o calendário.</span></label>
+      </div>
+
+      <div class="note">Meta até o lançamento: <b>12 a 15 vídeos no ar</b> e os templates dos vídeos do dia 19 prontos. Quem chega com acervo não depende de um único viral.</div>
+    </section>
+
+    <footer>
+      <p><b>Guia operacional</b> complementar à apresentação “O canal antes do dia 19”. Requisitos de monetização conferidos em novembro de 2026 — confirme os valores atuais em <a href="https://youtube.com/creators" target="_blank" rel="noopener">youtube.com/creators</a>. Este documento não tem vínculo com YouTube, Google ou Rockstar Games.</p>
+      <button class="reset" id="reset">Limpar checklist</button>
+    </footer>
+  </main>
+</div>
+
+<script>
+  const boxes = [...document.querySelectorAll('.check input')];
+  const doneEl = document.getElementById('done');
+  const totalEl = document.getElementById('total');
+  const bar = document.getElementById('progressBar');
+  totalEl.textContent = boxes.length;
+
+  const store = {
+    get(){ try { return JSON.parse(localStorage.getItem('gta6-canal-check') || '[]'); } catch { return []; } },
+    set(v){ try { localStorage.setItem('gta6-canal-check', JSON.stringify(v)); } catch {} }
+  };
+
+  function sync(){
+    const done = boxes.filter(b => b.checked).length;
+    doneEl.textContent = done;
+    bar.style.width = (done / boxes.length * 100) + '%';
+    store.set(boxes.filter(b => b.checked).map(b => b.dataset.k));
+  }
+
+  const saved = new Set(store.get());
+  boxes.forEach(b => {
+    b.checked = saved.has(b.dataset.k);
+    b.addEventListener('change', sync);
+  });
+  sync();
+
+  document.getElementById('reset').addEventListener('click', () => {
+    boxes.forEach(b => b.checked = false);
+    sync();
+  });
+
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const el = document.getElementById(btn.dataset.copy);
+      const text = el.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+      }
+      const old = btn.textContent;
+      btn.textContent = 'Copiado';
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = old; btn.classList.remove('done'); }, 1600);
+    });
+  });
+
+  // progress bar by checkboxes only
+</script>
+</body>
+</html>
